@@ -27,8 +27,21 @@ pub fn main() !void {
         } else if (std.mem.eql(u8, command, "echo")) {
             _ = try stdout.write(args);
             _ = try stdout.write("\n");
+        } else if (std.mem.eql(u8, command, "type")) {
+            try handleTypeBuiltin(args, stdout);
         } else {
             try stdout.print("{s}: command not found\n", .{user_input.?});
         }
     }
+}
+
+fn handleTypeBuiltin(args: []const u8, stdout: anytype) !void {
+    const builtins = [_][]const u8{ "exit", "echo", "type" };
+    for (builtins) |builtin| {
+        if (std.mem.eql(u8, args, builtin)) {
+            try stdout.print("{s} is a shell builtin\n", .{builtin});
+            return;
+        }
+    }
+    try stdout.print("{s}: not found\n", .{args});
 }
