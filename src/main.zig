@@ -17,6 +17,10 @@ pub fn main() !void {
             break;
         }
 
+        if(std.mem.eql(u8, user_input.?, "exit 0")) {
+            break;
+        }
+
         try stdout.print("{s}: command not found\n", .{user_input.?});
     }
 }
